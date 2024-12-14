@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Potensi Pertanian</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #28a745;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .link {
+            text-align: center;
+        }
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="authContainer">
+        <h1>Login</h1>
+        <!-- Login Form -->
+        <form id="loginForm">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" name="username" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="link">
+            <p>Belum punya akun? <a href="#" id="showRegister">Daftar sekarang</a></p>
+        </div>
+    </div>
+
+    <div class="container" id="registerContainer" style="display: none;">
+        <h1>Registrasi</h1>
+        <!-- Register Form -->
+        <form id="registerForm">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" name="username" required>
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" name="password" required>
+            <label for="registerRole">Pilih Role</label>
+            <select id="registerRole" name="role" required>
+                <option value="petani">Petani</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="link">
+            <p>Sudah punya akun? <a href="#" id="showLogin">Masuk sekarang</a></p>
+        </div>
+    </div>
+
+    <div class="container" id="dashboardContainer" style="display: none;">
+        <h1>Dashboard</h1>
+        <div id="dashboardRole" style="text-align: center; margin-bottom: 20px;"></div>
+        <div id="dashboardContent" style="text-align: center;"></div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Fungsi untuk menampilkan login atau register
+        const authContainer = document.getElementById('authContainer');
+        const registerContainer = document.getElementById('registerContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const dashboardRole = document.getElementById('dashboardRole');
+        const dashboardContent = document.getElementById('dashboardContent');
+
+        document.getElementById('showRegister').onclick = () => {
+            authContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+        };
+
+        document.getElementById('showLogin').onclick = () => {
+            registerContainer.style.display = 'none';
+            authContainer.style.display = 'block';
+        };
+
+        // Fungsi login
+        loginForm.onsubmit = async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const response = await fetch('index.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `login=1&username=${username}&password=${password}`
+            });
+
+            const result = await response.text();
+            if (result.includes('admin')) {
+                showDashboard('Admin');
+            } else if (result.includes('petani')) {
+                showDashboard('Petani');
+            } else {
+                alert(result); // Error message
+            }
+        };
+
+        // Fungsi register
+        registerForm.onsubmit = async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('registerRole').value;
+
+            const response = await fetch('index.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `register=1&username=${username}&password=${password}&role=${role}`
+            });
+
+            const result = await response.text();
+            alert(result);
+            if (result.includes('Registrasi berhasil')) {
+                document.getElementById('showLogin').click();
+            }
+        };
+
+        // Fungsi menampilkan dashboard
+        function showDashboard(role) {
+            authContainer.style.display = 'none';
+            registerContainer.style.display = 'none';
+            dashboardContainer.style.display = 'block';
+
+            dashboardRole.innerHTML = `<h3>Role Anda: ${role}</h3>`;
+            if (role === 'Admin') {
+                dashboardContent.innerHTML = `
+                    <a href="#">Kelola Pengguna</a><br>
+                    <a href="#">Lihat Laporan</a><br>
+                    <a href="#">Manajemen Sistem</a>
+                `;
+            } else if (role === 'Petani') {
+                dashboardContent.innerHTML = `
+                    <a href="#">Input Data Lahan</a><br>
+                    <a href="#">Lihat Harga Pasar</a><br>
+                    <a href="#">Panduan & Tips</a>
+                `;
+            }
+        }
+
+        // Fungsi logout
+        function logout() {
+            authContainer.style.display = 'block';
+            registerContainer.style.display = 'none';
+            dashboardContainer.style.display = 'none';
+            loginForm.reset();
+        }
+    </script>
+</body>
+</html>
