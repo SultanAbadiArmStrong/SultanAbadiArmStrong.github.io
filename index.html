@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Potensi Pertanian</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #28a745;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .link {
+            text-align: center;
+        }
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #dashboard {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="container" id="loginContainer">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="link">
+            <p>Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a></p>
+        </div>
+    </div>
+
+    <!-- Register Form -->
+    <div class="container" id="registerContainer" style="display:none;">
+        <h1>Registrasi</h1>
+        <form id="registerForm">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" required>
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required>
+            <label for="registerRole">Role</label>
+            <select id="registerRole" required>
+                <option value="petani">Petani</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="link">
+            <p>Sudah punya akun? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="container" id="dashboardContainer" style="display:none;">
+        <h1>Dashboard</h1>
+        <div id="dashboard"></div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Menampilkan form login/registrasi
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+        }
+
+        // Simpan user ke localStorage
+        document.getElementById('registerForm').onsubmit = function (e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('registerRole').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userExists = users.find(u => u.username === username);
+
+            if (userExists) {
+                alert('Username sudah digunakan');
+                return;
+            }
+
+            users.push({ username, password, role });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registrasi berhasil! Silahkan login.');
+            showLogin();
+        };
+
+        // Login user
+        document.getElementById('loginForm').onsubmit = function (e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                showDashboard(user);
+            } else {
+                alert('Username atau password salah');
+            }
+        };
+
+        // Tampilkan dashboard
+        function showDashboard(user) {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+
+            document.getElementById('dashboard').innerHTML = `
+                <p>Selamat datang, <b>${user.username}</b></p>
+                <p>Role Anda: <b>${user.role}</b></p>
+            `;
+        }
+
+        // Logout
+        function logout() {
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
