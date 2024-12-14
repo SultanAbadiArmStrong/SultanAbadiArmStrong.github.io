@@ -12,28 +12,27 @@
             background: #f4f4f4;
         }
         .container {
-            max-width: 800px;
+            max-width: 400px;
             margin: 50px auto;
             background: white;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
+        h1, h3 {
             text-align: center;
             color: #28a745;
         }
-        form, .feature {
-            margin-bottom: 20px;
+        form {
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
             margin-bottom: 5px;
         }
-        input, textarea, select, button {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 8px;
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
@@ -45,140 +44,184 @@
         button:hover {
             background: #218838;
         }
+        .link {
+            text-align: center;
+        }
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
         nav {
             display: flex;
             justify-content: space-around;
             background: #28a745;
             padding: 10px;
+            margin-bottom: 20px;
         }
         nav a {
             color: white;
             text-decoration: none;
+            cursor: pointer;
         }
-        #features {
+        .feature {
             display: none;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Login Page -->
+    <!-- Login Form -->
     <div class="container" id="loginContainer">
-        <h1>Login</h1>
+        <h1>SISTEM INFORMASI POTENSI PERTANIAN</h1>
+        <h3>Login</h3>
         <form id="loginForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" required>
-            <label for="password">Password</label>
-            <input type="password" id="password" required>
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
             <button type="submit">Login</button>
         </form>
+        <div class="link">
+            <p>Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a></p>
+        </div>
+    </div>
+
+    <!-- Register Form -->
+    <div class="container" id="registerContainer" style="display:none;">
+        <h1>Registrasi</h1>
+        <form id="registerForm">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" required>
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required>
+            <label for="registerRole">Role</label>
+            <select id="registerRole" required>
+                <option value="petani">Petani</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="link">
+            <p>Sudah punya akun? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
     </div>
 
     <!-- Dashboard -->
-    <div class="container" id="features">
+    <div class="container" id="dashboardContainer" style="display:none;">
         <nav>
-            <a href="#" onclick="showSection('tanaman')">Informasi Tanaman</a>
-            <a href="#" onclick="showSection('harga')">Harga Pasar</a>
-            <a href="#" onclick="showSection('tips')">Tips Pertanian</a>
-            <a href="#" onclick="showSection('kelola')">Kelola Data</a>
-            <a href="#" onclick="logout()">Logout</a>
+            <a onclick="showSection('tanaman')">Informasi Tanaman</a>
+            <a onclick="showSection('harga')">Harga Pasar</a>
+            <a onclick="showSection('tips')">Tips Pertanian</a>
+            <a onclick="showSection('kelola')">Kelola Data</a>
+            <a onclick="logout()">Logout</a>
         </nav>
-        <h2 id="dashboardTitle"></h2>
+        <h1 id="welcomeMessage"></h1>
+        <div id="dashboard"></div>
 
-        <!-- Section for Features -->
-        <div class="feature" id="tanaman" style="display:none;">
-            <h2>Informasi Tanaman</h2>
-            <label for="geografi">Kondisi Geografis</label>
+        <!-- Fitur Informasi Tanaman -->
+        <div class="feature" id="tanaman">
+            <h3>Informasi Tanaman</h3>
+            <label>Kondisi Geografis</label>
             <input type="text" id="geografi" placeholder="Masukkan kondisi geografis">
-            <label for="iklim">Iklim</label>
+            <label>Iklim</label>
             <input type="text" id="iklim" placeholder="Masukkan iklim">
-            <label for="tanah">Jenis Tanah</label>
+            <label>Jenis Tanah</label>
             <input type="text" id="tanah" placeholder="Masukkan jenis tanah">
-            <button onclick="cariTanaman()">Cari Tanaman</button>
+            <button onclick="cariTanaman()">Cari</button>
             <p id="hasilTanaman"></p>
         </div>
 
-        <div class="feature" id="harga" style="display:none;">
-            <h2>Harga Pasar Komoditas</h2>
-            <ul>
-                <li>Beras: Rp 10,000/kg</li>
-                <li>Jagung: Rp 8,000/kg</li>
-                <li>Kedelai: Rp 12,000/kg</li>
-            </ul>
+        <!-- Fitur Harga Pasar -->
+        <div class="feature" id="harga">
+            <h3>Harga Pasar</h3>
+            <p>Beras: Rp 10,000/Kg</p>
+            <p>Jagung: Rp 8,000/Kg</p>
+            <p>Kedelai: Rp 12,000/Kg</p>
         </div>
 
-        <div class="feature" id="tips" style="display:none;">
-            <h2>Tips Pertanian</h2>
-            <p>- Pilih bibit unggul untuk hasil lebih maksimal.</p>
-            <p>- Perhatikan irigasi dan drainase lahan.</p>
-            <p>- Manfaatkan pupuk organik untuk tanah sehat.</p>
+        <!-- Tips Pertanian -->
+        <div class="feature" id="tips">
+            <h3>Tips Pertanian</h3>
+            <p>- Gunakan pupuk organik untuk tanah subur.</p>
+            <p>- Rotasi tanaman untuk menjaga kesuburan lahan.</p>
         </div>
 
-        <div class="feature" id="kelola" style="display:none;">
-            <h2>Kelola Data Pertanian</h2>
-            <label for="lahan">Nama Lahan</label>
-            <input type="text" id="lahan" placeholder="Nama lahan">
-            <label for="hasilPanen">Hasil Panen (Kg)</label>
-            <input type="number" id="hasilPanen" placeholder="Jumlah hasil panen">
+        <!-- Kelola Data -->
+        <div class="feature" id="kelola">
+            <h3>Kelola Data Pertanian</h3>
+            <label>Nama Lahan</label>
+            <input type="text" id="lahan">
+            <label>Hasil Panen (Kg)</label>
+            <input type="number" id="hasilPanen">
             <button onclick="simpanData()">Simpan Data</button>
             <p id="notifData"></p>
         </div>
     </div>
 
     <script>
-        // Simulasi user login (Admin dan Petani)
-        const users = [
-            { username: 'admin', password: 'admin123', role: 'Administrator' },
-            { username: 'petani', password: 'petani123', role: 'Petani' }
-        ];
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+        }
 
-        function logout() {
-            document.getElementById('features').style.display = 'none';
+        function showLogin() {
+            document.getElementById('registerContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'block';
         }
 
-        function showSection(section) {
-            document.querySelectorAll('.feature').forEach(div => div.style.display = 'none');
-            document.getElementById(section).style.display = 'block';
-        }
-
-        document.getElementById('loginForm').onsubmit = function (e) {
+        document.getElementById('registerForm').onsubmit = function(e) {
             e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const user = users.find(u => u.username === username && u.password === password);
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('registerRole').value;
 
+            if (users.find(u => u.username === username)) {
+                alert("Username sudah digunakan.");
+                return;
+            }
+
+            users.push({ username, password, role });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert("Registrasi berhasil!");
+            showLogin();
+        };
+
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = users.find(u => u.username === username && u.password === password);
             if (user) {
+                document.getElementById('welcomeMessage').innerText = `Selamat Datang, ${user.role}`;
                 document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('features').style.display = 'block';
-                document.getElementById('dashboardTitle').innerText = `Selamat Datang, ${user.role}`;
+                document.getElementById('dashboardContainer').style.display = 'block';
             } else {
-                alert('Username atau Password salah');
+                alert("Username atau password salah.");
             }
         };
 
+        function showSection(section) {
+            document.querySelectorAll('.feature').forEach(f => f.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+        }
+
         function cariTanaman() {
             const geografi = document.getElementById('geografi').value;
-            const iklim = document.getElementById('iklim').value;
-            const tanah = document.getElementById('tanah').value;
-
-            document.getElementById('hasilTanaman').innerText = `
-                Tanaman cocok untuk kondisi:
-                - Geografis: ${geografi}
-                - Iklim: ${iklim}
-                - Tanah: ${tanah} adalah Padi dan Jagung.
-            `;
+            document.getElementById('hasilTanaman').innerText = `Rekomendasi tanaman untuk ${geografi}: Padi, Jagung.`;
         }
 
         function simpanData() {
             const lahan = document.getElementById('lahan').value;
-            const hasilPanen = document.getElementById('hasilPanen').value;
+            const hasil = document.getElementById('hasilPanen').value;
+            alert(`Data lahan "${lahan}" dengan hasil ${hasil} Kg disimpan.`);
+        }
 
-            if (lahan && hasilPanen) {
-                document.getElementById('notifData').innerText = `Data untuk lahan "${lahan}" dengan hasil panen ${hasilPanen} Kg berhasil disimpan.`;
-            } else {
-                alert('Harap lengkapi semua data!');
-            }
+        function logout() {
+            location.reload();
         }
     </script>
 </body>
-            </html>
+                </html>
