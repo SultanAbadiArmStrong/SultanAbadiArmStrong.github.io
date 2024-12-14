@@ -5,19 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi Potensi Pertanian</title>
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background: #f4f4f4;
         }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
         h1, h3 {
             text-align: center;
             color: #28a745;
         }
-
-        /* Tab Navigation Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .link {
+            text-align: center;
+        }
+        .link a {
+            color: #007bff;
+            text-decoration: none;
+        }
         .tab-container {
             display: flex;
             background-color: #28a745;
@@ -38,8 +71,6 @@
         .tab.active {
             background-color: #1e7e34;
         }
-
-        /* Content Container */
         .content {
             display: none;
             padding: 20px;
@@ -52,119 +83,150 @@
         .content.active {
             display: block;
         }
-
-        /* Button Styles */
-        button {
-            background: #28a745;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #218838;
-        }
     </style>
 </head>
 <body>
-    <h1>SISTEM INFORMASI POTENSI PERTANIAN</h1>
-
-    <!-- Navigasi Tab -->
-    <div class="tab-container">
-        <div class="tab active" onclick="openTab(event, 'informasiTanaman')">Informasi Tanaman</div>
-        <div class="tab" onclick="openTab(event, 'hargaPasar')">Harga Pasar</div>
-        <div class="tab" onclick="openTab(event, 'tipsPertanian')">Tips Pertanian</div>
-        <div class="tab" onclick="openTab(event, 'kelolaData')">Kelola Data</div>
-        <div class="tab" onclick="logout()">Logout</div>
+    <!-- Login Form -->
+    <div class="container" id="loginContainer">
+        <h1>Selamat Datang Di</h1>
+        <h3>SISTEM INFORMASI POTENSI PERTANIAN BERBASIS WEB</h3>
+        <h3>Login</h3>
+        <form id="loginForm">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="link">
+            <p>Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a></p>
+        </div>
     </div>
 
-    <!-- Konten Tab -->
-    <div id="informasiTanaman" class="content active">
-        <h3>Informasi Tanaman</h3>
-        <label>Kondisi Geografis:</label>
-        <input type="text" id="geografi" placeholder="Masukkan kondisi geografis">
-        <label>Iklim:</label>
-        <input type="text" id="iklim" placeholder="Masukkan iklim">
-        <label>Jenis Tanah:</label>
-        <input type="text" id="tanah" placeholder="Masukkan jenis tanah">
-        <button onclick="cariTanaman()">Cari Rekomendasi</button>
-        <p id="hasilTanaman"></p>
+    <!-- Register Form -->
+    <div class="container" id="registerContainer" style="display:none;">
+        <h1>Daftar Dulu Yuk</h1>
+        <h3>Registrasi</h3>
+        <form id="registerForm">
+            <label for="registerUsername">Username</label>
+            <input type="text" id="registerUsername" required>
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" required>
+            <label for="registerRole">Role</label>
+            <select id="registerRole" required>
+                <option value="petani">Petani</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="link">
+            <p>Sudah punya akun? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
     </div>
 
-    <div id="hargaPasar" class="content">
-        <h3>Harga Pasar</h3>
-        <p>Beras: Rp 10,000/Kg</p>
-        <p>Jagung: Rp 8,000/Kg</p>
-        <p>Kedelai: Rp 12,000/Kg</p>
-    </div>
+    <!-- Dashboard -->
+    <div class="container" id="dashboardContainer" style="display:none;">
+        <div class="tab-container">
+            <div class="tab active" onclick="openTab(event, 'informasiTanaman')">Informasi Tanaman</div>
+            <div class="tab" onclick="openTab(event, 'hargaPasar')">Harga Pasar</div>
+            <div class="tab" onclick="openTab(event, 'tipsPertanian')">Tips Pertanian</div>
+            <div class="tab" onclick="openTab(event, 'kelolaData')">Kelola Data</div>
+            <div class="tab" onclick="logout()">Logout</div>
+        </div>
 
-    <div id="tipsPertanian" class="content">
-        <h3>Tips Pertanian</h3>
-        <ul>
-            <li>Gunakan pupuk organik untuk menjaga kesuburan tanah.</li>
-            <li>Rotasi tanaman agar tanah tidak kehilangan nutrisi.</li>
-            <li>Pilih bibit unggul untuk hasil panen optimal.</li>
-        </ul>
-    </div>
+        <!-- Konten Tab -->
+        <div id="informasiTanaman" class="content active">
+            <h3>Informasi Tanaman</h3>
+            <label>Kondisi Geografis:</label>
+            <input type="text" id="geografi" placeholder="Masukkan kondisi geografis">
+            <label>Iklim:</label>
+            <input type="text" id="iklim" placeholder="Masukkan iklim">
+            <label>Jenis Tanah:</label>
+            <input type="text" id="tanah" placeholder="Masukkan jenis tanah">
+            <button onclick="cariTanaman()">Cari Rekomendasi</button>
+            <p id="hasilTanaman"></p>
+        </div>
 
-    <div id="kelolaData" class="content">
-        <h3>Kelola Data Pertanian</h3>
-        <label>Nama Lahan:</label>
-        <input type="text" id="lahan" placeholder="Nama lahan">
-        <label>Hasil Panen (Kg):</label>
-        <input type="number" id="hasilPanen" placeholder="Jumlah hasil panen">
-        <button onclick="simpanData()">Simpan Data</button>
-        <p id="notifData"></p>
+        <div id="hargaPasar" class="content">
+            <h3>Harga Pasar</h3>
+            <p>Beras: Rp 10,000/Kg</p>
+            <p>Jagung: Rp 8,000/Kg</p>
+            <p>Kedelai: Rp 12,000/Kg</p>
+        </div>
+
+        <div id="tipsPertanian" class="content">
+            <h3>Tips Pertanian</h3>
+            <ul>
+                <li>Gunakan pupuk organik untuk menjaga kesuburan tanah.</li>
+                <li>Rotasi tanaman agar tanah tidak kehilangan nutrisi.</li>
+                <li>Pilih bibit unggul untuk hasil panen optimal.</li>
+            </ul>
+        </div>
+
+        <div id="kelolaData" class="content">
+            <h3>Kelola Data Pertanian</h3>
+            <label>Nama Lahan:</label>
+            <input type="text" id="lahan" placeholder="Nama lahan">
+            <label>Hasil Panen (Kg):</label>
+            <input type="number" id="hasilPanen" placeholder="Jumlah hasil panen">
+            <button onclick="simpanData()">Simpan Data</button>
+            <p id="notifData"></p>
+        </div>
     </div>
 
     <script>
-        // Fungsi untuk navigasi tab
-        function openTab(event, tabId) {
-            const tabs = document.querySelectorAll('.tab');
-            const contents = document.querySelectorAll('.content');
-
-            // Hapus aktif dari semua tab dan sembunyikan konten
-            tabs.forEach(tab => tab.classList.remove('active'));
-            contents.forEach(content => content.classList.remove('active'));
-
-            // Tambahkan aktif pada tab yang diklik
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+        // Menampilkan form login/registrasi
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
         }
 
-        // Fungsi cari tanaman
-        function cariTanaman() {
-            const geografi = document.getElementById('geografi').value;
-            const iklim = document.getElementById('iklim').value;
-            const tanah = document.getElementById('tanah').value;
+        function showLogin() {
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+        }
 
-            if (geografi && iklim && tanah) {
-                document.getElementById('hasilTanaman').innerText = 
-                    `Rekomendasi tanaman untuk kondisi: ${geografi}, Iklim ${iklim}, dan Jenis tanah ${tanah}: Padi, Jagung, Kedelai.`;
-            } else {
-                alert("Silakan isi semua input terlebih dahulu.");
+        // Simpan user ke localStorage
+        document.getElementById('registerForm').onsubmit = function (e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('registerRole').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userExists = users.find(u => u.username === username);
+
+            if (userExists) {
+                alert('Username sudah digunakan');
+                return;
             }
-        }
 
-        // Fungsi simpan data
-        function simpanData() {
-            const lahan = document.getElementById('lahan').value;
-            const hasilPanen = document.getElementById('hasilPanen').value;
+            users.push({ username, password, role });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registrasi berhasil! Silahkan login.');
+            showLogin();
+        };
 
-            if (lahan && hasilPanen) {
-                document.getElementById('notifData').innerText = `Data lahan "${lahan}" dengan hasil panen ${hasilPanen} Kg telah disimpan.`;
+        // Login user
+        document.getElementById('loginForm').onsubmit = function (e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                showDashboard(user);
             } else {
-                alert("Harap isi semua data.");
+                alert('Username atau password salah');
             }
-        }
+        };
 
-        // Fungsi logout
-        function logout() {
-            alert("Anda telah logout.");
-            location.reload();
-        }
-    </script>
-</body>
-    </html>
+        // Tampilkan dashboard
+        function showDashboard(user) {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+
+            // Menyediakan konten dashboard berdasarkan peran
