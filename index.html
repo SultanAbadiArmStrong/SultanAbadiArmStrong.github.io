@@ -59,7 +59,9 @@
 <body>
     <!-- Login Form -->
     <div class="container" id="loginContainer">
-        <h1>Login</h1>
+        <h1>Selamat Datang Di</h1>
+        <h3>SISTEM INFORMASI POTENSI PERTANIAN BERBASIS WEB</h3>
+        <h3>Login</h3>
         <form id="loginForm">
             <label for="loginUsername">Username</label>
             <input type="text" id="loginUsername" required>
@@ -74,7 +76,8 @@
 
     <!-- Register Form -->
     <div class="container" id="registerContainer" style="display:none;">
-        <h1>Registrasi</h1>
+        <h1>Daftar Dulu Yuk</h1>
+        <h3>Registrasi</h3>
         <form id="registerForm">
             <label for="registerUsername">Username</label>
             <input type="text" id="registerUsername" required>
@@ -159,79 +162,13 @@
                 <p>Role Anda: <b>${user.role}</b></p>
             `;
         }
-        
-         <!-- Navigasi -->
-        <div class="nav" id="adminNav" style="display: none;">
-            <a href="#" onclick="viewUsers()">Kelola Pengguna</a>
-            <a href="#" onclick="viewReports()">Lihat Laporan</a>
-            <a href="#" onclick="manageSystem()">Manajemen Sistem</a>
-        </div>
-        <div class="nav" id="petaniNav" style="display: none;">
-            <a href="#" onclick="inputLahan()">Input Data Lahan</a>
-            <a href="#" onclick="viewMarket()">Lihat Pasar</a>
-            <a href="#" onclick="viewGuides()">Panduan & Tips</a>
-        </div>
-
-        <!-- Konten Utama -->
-        <div class="content" id="mainContent">
-            <p>Selamat datang! Silakan pilih menu di atas untuk melanjutkan.</p>
-        </div>
-
-        <!-- Tombol Logout -->
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="index.html" class="btn-logout">Logout</a>
-        </div>
-    </div>
-
-    <script>
-        // Simulasi data login (role: "admin" atau "petani")
-        const loggedInUser = {
-            username: "Admin123", // Ganti sesuai username login
-            role: "admin"         // Ganti sesuai role login ("admin" atau "petani")
-        };
-
-        // Menampilkan dashboard sesuai role
-        document.getElementById("userRole").innerText += loggedInUser.role.charAt(0).toUpperCase() + loggedInUser.role.slice(1);
-
-        if (loggedInUser.role === "admin") {
-            document.getElementById("adminNav").style.display = "flex";
-        } else if (loggedInUser.role === "petani") {
-            document.getElementById("petaniNav").style.display = "flex";
-        }
-
-        // Fungsi untuk masing-masing menu
-        function viewUsers() {
-            document.getElementById("mainContent").innerHTML = "<h3>Kelola Pengguna</h3><p>Fitur ini memungkinkan admin untuk mengelola data pengguna, seperti menambah, mengubah, atau menghapus pengguna.</p>";
-        }
-
-        function viewReports() {
-            document.getElementById("mainContent").innerHTML = "<h3>Lihat Laporan</h3><p>Admin dapat melihat laporan terkait aktivitas petani, data lahan, dan hasil panen.</p>";
-        }
-
-        function manageSystem() {
-            document.getElementById("mainContent").innerHTML = "<h3>Manajemen Sistem</h3><p>Admin dapat mengelola pengaturan sistem secara keseluruhan, seperti konfigurasi data dan kebijakan akses.</p>";
-        }
-
-        function inputLahan() {
-            document.getElementById("mainContent").innerHTML = "<h3>Input Data Lahan</h3><p>Petani dapat memasukkan data tentang lahan mereka, seperti lokasi, jenis tanah, dan luas lahan.</p>";
-        }
-
-        function viewMarket() {
-            document.getElementById("mainContent").innerHTML = "<h3>Lihat Pasar</h3><p>Petani dapat melihat harga pasar terkini untuk komoditas pertanian.</p>";
-        }
-
-        function viewGuides() {
-            document.getElementById("mainContent").innerHTML = "<h3>Panduan & Tips</h3><p>Petani dapat mengakses panduan dan tips tentang pertanian, strategi pemasaran, dan teknik bercocok tanam.</p>";
-        }
-       
 
         // Logout
         function logout() {
             document.getElementById('dashboardContainer').style.display = 'none';
             document.getElementById('loginContainer').style.display = 'block';
         }
-           </script> 
     </script>
 </body>
-    </html></body>
-</html>
+    </html>
+    
